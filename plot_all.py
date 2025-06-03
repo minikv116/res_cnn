@@ -4,8 +4,9 @@ from visualize_data.plot_confusion_matrix import plot_cf_and_evaluate_model_metr
 from visualize_data.plot_dynamic_valacc import plot_training_dynamics
 from visualize_data.plot_latency_hist import plot_latency_hist
 from visualize_data.plot_fps_hist import plot_fps_hist
+from visualize_data.plot_preds import save_prediction_grid
 from data_loader_fer2013 import create_dataloaders
-
+from models import MNet5
 
 if __name__ == "__main__":
 
@@ -64,3 +65,14 @@ if __name__ == "__main__":
         output_path = "./plots/fps_histogram.png" # сохраняем график
     )
     # В результате появится файл "./plots/fps_histogram.png"
+
+    model = MNet5()
+    model.load_state_dict(torch.load("./best_models/MNet5_best.pth"))
+    save_prediction_grid(
+        model=model,
+        test_dataset=test_ds,
+        start_index=90,
+        output_path="./plots/MNet5_predictions.png",
+        device="cuda:0"  # или "cpu"
+    )
+
